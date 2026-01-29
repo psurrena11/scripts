@@ -1,5 +1,7 @@
 #### dlv
-Download an MP4 from the provided url using yt-dlp.
+* Download an MP4 from the provided url
+* Required `yt-dlp`.
 
 #### gfx
-Use `gfx -i` to switch to integrated graphics, use `gfx -h` for hybrid.
+* Use `gfx -i` to switch to integrated graphics, use `gfx -h` for hybrid.
+* Requires `supergfxctl`.
