@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+		echo "Usage: gfx [-i|-d|-h]"
+    echo "  -i    Switch to Integrated mode"
+    echo "  -h    Switch to Hybrid mode"
+    exit 1
+fi
+
+
+case "$1" in
+	-i)
+			echo "Switching to Integrated mode..."
+			supergfxctl -m Integrated
+			;;
+	-h)
+			echo "Switching to Hybrid mode..."
+			supergfxctl -m Hybrid
+			;;
+	*) 
+			echo "Invalid option: $1"
+			echo "Use [ -i | -d | -h ]"
+			exit 1
+			;;
+esac
