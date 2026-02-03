@@ -1,32 +1,56 @@
 #!/bin/bash
 
+SESSION_DIR="/usr/share/wayland-sessions"
+
+# Build arrays of session names and exec commands
+names=()
+execs=()
+
+for file in "$SESSION_DIR"/*.desktop; do
+    [[ -f "$file" ]] || continue
+    name=$(grep -m1 "^Name=" "$file" | cut -d= -f2)
+    execmd=$(grep -m1 "^Exec=" "$file" | cut -d= -f2-)
+    if [[ -n "$name" && -n "$execmd" ]]; then
+        names+=("$name")
+        execs+=("$execmd")
+    fi
+done
+
+if [[ ${#names[@]} -eq 0 ]]; then
+    echo "No sessions found in $SESSION_DIR"
+    exit 1
+fi
+
 clear
 echo "================================"
 echo "     Desktop Session Manager    "
 echo "================================"
 echo ""
-echo "  1) KDE Plasma (Wayland)"
-echo "  2) COSMIC"
-echo "  3) Cancel"
+
+for i in "${!names[@]}"; do
+    echo "  $((i+1))) ${names[$i]}"
+done
+echo "  $((${#names[@]}+1))) Cancel"
 echo ""
 echo "--------------------------------"
-read -p "Choose desktop [1-3]: " choice
+read -p "Choose desktop [1-$((${#names[@]}+1))]: " choice
 
-case $choice in
-    1)
-        echo "Starting KDE Plasma Wayland..."
-        exec dbus-run-session startplasma-wayland
-        ;;
-    2)
-        echo "Starting COSMIC..."
-        exec dbus-run-session cosmic-session
-        ;;
-    3)
-        echo "Cancelled."
-        exit 0
-        ;;
-    *)
-        echo "Invalid choice. Exiting."
-        exit 1
-        ;;
-esac
+# Validate input
+if ! [[ "$choice" =~ ^[0-9]+$ ]]; then
+    echo "Invalid choice."
+    exit 1
+fi
+
+if [[ "$choice" -eq $((${#names[@]}+1)) ]]; then
+    echo "Cancelled."
+    exit 0
+fi
+
+if [[ "$choice" -lt 1 || "$choice" -gt ${#names[@]} ]]; then
+    echo "Invalid choice."
+    exit 1
+fi
+
+idx=$((choice-1))
+echo "Starting ${names[$idx]}..."
+exec ${execs[$idx]}
