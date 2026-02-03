@@ -1,10 +1,30 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-		echo "Usage: gfx [-i|-d|-h]"
-    echo "  -i    Switch to Integrated mode"
-    echo "  -h    Switch to Hybrid mode"
-    exit 1
+    echo "========================"
+    echo "   Graphics Mode Switch"
+    echo "========================"
+    echo ""
+    echo "  1) Integrated"
+    echo "  2) Dedicated"
+    echo "  3) Hybrid"
+    echo "  4) Cancel"
+    echo ""
+    echo "------------------------"
+    read -p "Choose mode [1-4]: " choice
+    case $choice in
+        1) set -- "-i" ;;
+        2) set -- "-d" ;;
+        3) set -- "-h" ;;
+        4)
+            echo "Cancelled."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice."
+            exit 1
+            ;;
+    esac
 fi
 
 
@@ -12,6 +32,10 @@ case "$1" in
 	-i)
 			echo "Switching to Integrated mode..."
 			supergfxctl -m Integrated
+			;;
+	-d)
+			echo "Switching to Dedicated mode..."
+			supergfxctl -m Dedicated
 			;;
 	-h)
 			echo "Switching to Hybrid mode..."

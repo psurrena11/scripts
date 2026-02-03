@@ -1,0 +1,32 @@
+#!/bin/bash
+
+clear
+echo "================================"
+echo "     Desktop Session Manager    "
+echo "================================"
+echo ""
+echo "  1) KDE Plasma (Wayland)"
+echo "  2) COSMIC"
+echo "  3) Cancel"
+echo ""
+echo "--------------------------------"
+read -p "Choose desktop [1-3]: " choice
+
+case $choice in
+    1)
+        echo "Starting KDE Plasma Wayland..."
+        exec dbus-run-session startplasma-wayland
+        ;;
+    2)
+        echo "Starting COSMIC..."
+        exec dbus-run-session cosmic-session
+        ;;
+    3)
+        echo "Cancelled."
+        exit 0
+        ;;
+    *)
+        echo "Invalid choice. Exiting."
+        exit 1
+        ;;
+esac
