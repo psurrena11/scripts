@@ -8,3 +8,4 @@
 
 #### dc
 * Simple desktop environment chooser
+* Auto-destects availabe environments from the .desktop file
